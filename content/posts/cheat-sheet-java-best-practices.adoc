@@ -1,0 +1,32 @@
+---
+title: "Cheat Sheet: The New Java Best Practices"
+date: 2025-10-16T20:00:00+00:00
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Cheat Sheet: The New Java Best Practices
+
+At Devoxx, there was an excellent talk on Java best practices since Java 8. Here are some key takeaways:
+
+== Core Practices
+
+* Use the latest Java version
+* Use multi-line strings
+* Prefer immutable classes and collections
+* Prefer composition over inheritance
+* Use `Optional` instead of `null` for public return types
+* Use `var` where appropriate
+* Use arrow expressions in switch statements
+* Use `instanceof` pattern matching for variable definitions
+* Differentiate between beans and records; they have different semantics
+* Use pattern matching and gain a deep understanding of how it works
+
+As a summary, there was a great talk by Stephen that emphasized data-oriented programming: where language and frameworks give you the possibility to model data as data and write logic as logic.
+
+This list highlights the most interesting points, but the full talk provides the reasoning behind each practice — worth a watch for any Java developer.
+
+link:https://www.youtube.com/watch?v=4sjJmKXLnuY[Watch the talk on YouTube]
