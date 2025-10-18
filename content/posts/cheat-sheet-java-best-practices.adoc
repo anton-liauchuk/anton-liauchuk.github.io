@@ -1,6 +1,6 @@
 ---
 title: "Cheat Sheet: The New Java Best Practices"
-date: 2025-10-16T20:00:00+00:00
+date: "2025-10-16"
 draft: false
 markup: adoc
 ---
@@ -10,9 +10,7 @@ markup: adoc
 
 = Cheat Sheet: The New Java Best Practices
 
-At Devoxx, there was an excellent talk on Java best practices since Java 8. Here are some key takeaways:
-
-== Core Practices
+At Devoxx, there was an excellent link:https://www.youtube.com/watch?v=4sjJmKXLnuY[talk] on Java best practices since Java 8. Here are some key takeaways:
 
 * Use the latest Java version
 * Use multi-line strings
