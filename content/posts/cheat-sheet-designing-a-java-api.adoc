@@ -1,0 +1,30 @@
+---
+title: "Cheat Sheet: Designing a Java API"
+date: "2025-07-12"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Cheat Sheet: Designing a Java API
+
+This article is a quick-reference cheat sheet based on a great Devoxx presentation by Mario Fusco – _“Let’s Make a Contract: The Art of Designing a Java API.”_
+
+Watch the talk at https://www.youtube.com/watch?v=0-v1OfZOeFY[here], and check out the slides at https://speakerdeck.com/mariofusco/lets-make-a-contract-the-art-of-designing-a-java-api[here].
+
+The goal of this article is not to explain the concepts in depth but to provide a compact reminder of the key principles to revisit when designing a Java API.
+
+== Key Principles
+
+* *Method signature* — Prefer using objects over primitives, especially when argument ordering is important and unclear with primitives.
+* *Static factory methods* — Use static factory methods to create objects. These can return interfaces with hidden implementations.
+* *Fluent API* — Consider fluent APIs as alternatives to complex constructors for better readability.
+* *Weakest possible types* — Accept the weakest possible type to allow flexibility in usage.
+* *Avoid checked exceptions* — They leak implementation details and increase coupling. Favor unchecked exceptions or functional handling.
+* *Prefer small interfaces* — Split large interfaces into smaller, more focused ones.
+* *No booleans in method signatures* — Avoid methods like `save(true)`, which are unclear. Use enums or split into separate methods.
+* *Return empty collections / booleans* — Never return `null` — return empty collections or `Optional`/boolean instead.
+* *Use meaningful return types* — Avoid returning raw data types when domain-specific types convey more meaning.
+* *Defend API contracts* — Return unmodifiable collections to prevent external mutation.
