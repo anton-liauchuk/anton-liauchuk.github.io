@@ -1,0 +1,39 @@
+---
+title: "Cheat sheet: Communication Patterns by Jacqui Read"
+date: "2025-11-02"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Cheat sheet: Communication Patterns by Jacqui Read
+
+A quick-reference guide to the key principles from the book link:https://www.amazon.com/Communication-Patterns-Guide-Developers-Architects/dp/1098140540[Communication Patterns].
+
+== Diagram Principles
+
+* The right amount of detail depends on who will be reading the diagram
+* Make diagrams serve a single purpose - split them if needed
+
+== Tips for Technical Documents
+
+* Begin with the key points
+* State the scope and non-scope explicitly
+* Define the intended audience
+* Specify required prerequisite knowledge or reading
+
+== Techniques for Influencing and Persuading
+
+* Thoughtful pauses
+* Give options
+* Repetition
+
+== Useful Tools for Knowledge Management
+
+* Tags and metadata
+* Embedding and referencing
+* Flat structure
+* Templates and checklists
+* Layers
