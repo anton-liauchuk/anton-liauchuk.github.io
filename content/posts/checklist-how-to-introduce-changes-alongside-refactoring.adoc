@@ -1,0 +1,55 @@
+---
+title: "Checklist: how to introduce changes alongside refactoring"
+date: "2025-05-20"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Checklist: how to introduce changes alongside refactoring
+
+A structured set of steps to safely add new functionality while refactoring existing code.
+
+== 1. Check test coverage
+
+Ensure that your code has a high enough level of test coverage.
+
+== 2. Evaluate test quality
+
+Run mutation testing (e.g., using https://pitest.org/[PIT]) to assess the resilience and effectiveness of your tests.
+
+== 3. Improve tests if necessary
+
+Add or improve tests to:
+
+* increase code coverage,
+* strengthen resistance to mutations.
+
+== 4. Organize unit tests
+
+If the class under test contains a lot of logic:
+
+* use JUnit's `@Nested` annotation to group unit tests by functionality.
+
+== 5. Rethink architecture
+
+Check whether these `@Nested` test groups suggest logical separations in your production code — maybe some parts should be split into distinct classes.
+
+== 6. Extract new classes
+
+* move relevant `@Nested` test groups into separate test classes.
+* implement a new class that allows these tests to pass.
+
+== 7. Refactor and Integrate
+
+* inject or integrate the new class into the original implementation.
+* adapt the remaining tests to align with the updated architecture.
+
+== 8. Add New Functionality Using TDD
+
+Follow the test-driven development process:
+
+* first write a failing test,
+* then implement the corresponding functionality.
