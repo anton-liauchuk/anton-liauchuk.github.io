@@ -1,0 +1,33 @@
+---
+title: "Kafka Connect - Custom REST extension"
+date: "2024-01-12"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Kafka Connect - Custom REST extension
+
+We explored the usage of different layers of Kafka Connect in https://uuidable.com/kafka-connect-understanding-converter-transformer-and-connector-layers/[the first post]. Now, let's delve into creating custom REST extensions.
+
+Kafka Connect provides a built-in feature to define your own REST extensions, which becomes valuable when the Kafka Connect API alone does not meet your requirements, necessitating the development of a custom implementation. A comprehensive example, along with all Kafka Connect experiments, is accessible in https://github.com/anton-liauchuk/kafka-connect-examples[the repository].
+
+The example includes the `MetaInfoRestExtension`, implementing `ConnectRestExtension`. In the method `com.uuidable.rest.MetaInfoRestExtension#register`, we define the resource:
+
+----
+@Override
+public void register(ConnectRestExtensionContext restPluginContext) {
+  restPluginContext.configurable().register(new MetaInfoResource(restPluginContext.clusterState(), new RandomMetaInfoLoader()));
+}
+----
+
+Let's consider a scenario where the resource's logic attempts to load identifiers for connectors from an external system. In this implementation, a random UUID generator is utilized as the source for identifiers. To enable this in the Kafka Connect image, ensure that environment variables `CONNECT_REST_EXTENSION_CLASSES` and `CLASSPATH` are defined. For instance, in `docker-compose.yaml`:
+
+----
+CONNECT_REST_EXTENSION_CLASSES: "com.uuidable.rest.MetaInfoRestExtension"
+CLASSPATH: /usr/share/java/rest/*
+----
+
+As demonstrated, setting up your own REST extension in Kafka Connect is not a complex task. Once again, the complete example, along with other Kafka Connect experiments, is accessible https://github.com/anton-liauchuk/kafka-connect-examples[on GitHub].
