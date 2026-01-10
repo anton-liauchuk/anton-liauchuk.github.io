@@ -1,0 +1,143 @@
+---
+title: "Virtual Threads in Quarkus Applications"
+date: "2024-02-11"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Virtual Threads in Quarkus Applications
+
+In this article, you will look at the examples of virtual threads in Quarkus applications. Source code is accessible in https://github.com/anton-liauchuk/quarkus-virtual-threads[the repository].
+
+Virtual threads, introduced in Java 21, offer lightweight threads that don't block the carrier thread. Quarkus provides a convenient engine to utilize virtual threads seamlessly. To integrate virtual threads in Quarkus, you can use the annotation `io.smallrye.common.annotation.RunOnVirtualThread`, indicating that the method should execute on a virtual thread. In our sample application, we'll use the RESTEasy Reactive extension:
+
+----
+implementation("io.quarkus:quarkus-resteasy-reactive")
+implementation("io.quarkus:quarkus-resteasy-reactive-jackson")
+----
+
+`@RunOnVirtualThread` can be applied to reactive REST endpoints to offload their execution onto a new virtual thread instead of running it on an event loop or worker thread (in the case of RESTEasy Reactive). Note that in RESTEasy Reactive, this annotation is applicable only to endpoints annotated with `@Blocking` or those considered blocking due to their signature.
+
+Let's examine a practical example of using virtual threads:
+
+----
+@RunOnVirtualThread
+@Path("/items")
+public class ItemResource {
+  @Inject Logger log;
+
+  @GET
+  @Path("/{id}")
+  public Item get(@PathParam("id") Long id) {
+    currentThreadLog();
+    return Item.findById(id);
+  }
+
+  @POST
+  @Transactional
+  public Response create(Item item) {
+    currentThreadLog();
+    item.persist();
+    return Response.status(Status.CREATED).entity(item).build();
+  }
+
+  private void currentThreadLog() {
+    Log.infof("Current thread %s", Thread.currentThread());
+  }
+}
+----
+
+All methods in this resource have a blocking signature, and the class is annotated with `@RunOnVirtualThread`. Consequently, we'll run and check the logs when invoking endpoints from this resource:
+
+----
+2024-02-08 16:08:14,521 INFO [com.uui.ItemResource] (quarkus-virtual-thread-0) Current thread VirtualThread[#161,quarkus-virtual-thread-0]/runnable@ForkJoinPool-1-worker-1
+2024-02-08 16:08:15,852 INFO [com.uui.ItemResource] (quarkus-virtual-thread-1) Current thread VirtualThread[#175,quarkus-virtual-thread-1]/runnable@ForkJoinPool-1-worker-1
+2024-02-08 16:08:16,787 INFO [com.uui.ItemResource] (quarkus-virtual-thread-2) Current thread VirtualThread[#176,quarkus-virtual-thread-2]/runnable@ForkJoinPool-1-worker-1
+----
+
+As observed, the methods in this class utilize virtual threads for invocation.
+
+Now, let's review a new resource where we've added a synchronized block with thread sleep logic:
+
+----
+package com.uuidable;
+
+import org.jboss.logging.Logger;
+import io.quarkus.logging.Log;
+import io.smallrye.common.annotation.RunOnVirtualThread;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
+
+@RunOnVirtualThread
+@Path("/pin-items")
+public class PinItemResource {
+  @Inject Logger log;
+
+  @GET
+  @Path("/{id}")
+  public Item get(@PathParam("id") Long id) throws InterruptedException {
+    currentThreadLog();
+    pin();
+    return Item.findById(id);
+  }
+
+  @POST
+  @Transactional
+  public Response create(Item item) throws InterruptedException {
+    currentThreadLog();
+    pin();
+    item.persist();
+    return Response.status(Status.CREATED).entity(item).build();
+  }
+
+  private void pin() throws InterruptedException {
+    synchronized (this) {
+      Thread.sleep(3000);
+      Log.info("Pinning the carrier thread");
+    }
+  }
+
+  private void currentThreadLog() {
+    Log.infof("Current thread %s", Thread.currentThread());
+  }
+}
+----
+
+These methods still run on virtual threads, but the carrier thread is *pinned* in this case. *Pinning* prevents freeing the carrier thread, thereby losing the benefits of virtual threads. To verify that the resource indeed uses virtual threads as expected without pinning, we can utilize the JUnit extension `junit5-virtual-threads`. This extension provides the ability to ensure that a thread is not pinned. The `ShouldNotPin` annotation checks that the test method or class does not pin the carrier thread. Here's an example:
+
+----
+@QuarkusTest
+@VirtualThreadUnit
+@ShouldNotPin
+class ItemResourceTest {
+  @Test
+  void create_newItem_shouldNotPin() {
+    Item item = new Item();
+    item.name = "name";
+
+    given()
+      .body(item)
+      .contentType(MediaType.APPLICATION_JSON)
+      .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+      .when()
+      .post("/items")
+      .then()
+      .statusCode(HttpStatus.SC_CREATED)
+      .contentType(MediaType.APPLICATION_JSON)
+      .body("name", is(item.name));
+  }
+}
+----
+
+== Conclusion
+
+This article has explored using virtual threads in Quarkus and demonstrated how to test our application to detect pinning.
