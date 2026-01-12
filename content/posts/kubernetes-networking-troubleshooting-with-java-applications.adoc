@@ -1,0 +1,83 @@
+---
+title: "Kubernetes Networking Troubleshooting with Java applications"
+date: "2023-10-01"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Kubernetes Networking Troubleshooting with Java applications
+
+In this article, we'll delve into Kubernetes networking and its interaction with Java applications deployed on AWS EKS. We will explore common network errors and provide insights into troubleshooting and optimizing your setup. Let's start with an overview of the architecture we're considering.
+
+== Overview
+
+In our hypothetical architecture:
+
+* A server application written in Java is hosted on AWS EKS (Elastic Kubernetes Service).
+* A client application, also Java-based, resides on an EC2 instance with a Vert.x HTTP client.
+
+Networking flow in this setup involves traffic from the EC2 client, passing through an Nginx ingress controller, and reaching the Java applications running within Kubernetes pods.
+
+== Network Errors
+
+When dealing with such a complex network setup, it's crucial to understand and address common network-related issues. Here are some network errors you may encounter:
+
+=== 1. Connection Closed
+
+*Symptoms:* You might encounter "Connection: closed" errors. This often happens when the client's keep-alive setting exceeds the server's setting.
+
+*Resolution:* To mitigate this issue, consider temporary disabling keep-alive and monitor if the number of errors decreases.
+
+=== 2. Connection Refused
+
+*Symptoms:* "Connection refused" errors indicate that the client's request was not accepted by the server.
+
+*Resolution:* Investigate the network configuration and ensure that the client can reach the server correctly. Check security groups, firewalls, and routing rules.
+
+=== 3. 503 Service Temporary Unavailable
+
+*Symptoms:* A "503 Service Temporary Unavailable" error suggests that the service cannot handle incoming requests.
+
+*Resolution:* This error could be related to application readiness or liveness issues within Kubernetes. Let's explore troubleshooting steps to address these.
+
+== Troubleshooting Steps
+
+=== 1. Change the Client
+
+Temporarily switching to another HTTP client not only reduced errors but also introduced new challenges. It became evident that various client settings needed adjustment, and comparing the settings of the alternative HTTP client proved helpful in understanding what was amiss.
+
+*Additional Considerations:*
+
+* Compatibility Testing: Ensure the new client is compatible with your existing system components.
+* Logging and Monitoring: Implement comprehensive monitoring to compare client performance.
+* Resource Consumption: Evaluate the new client's impact on resource consumption.
+* Client-specific Configuration: Customize client settings to optimize performance.
+
+=== 2. Temporarily disable Keep-Alive
+
+Temporarily disabling Keep-Alive can have significant implications for network behavior. It can reduce resource usage on the server but may lead to increased connection overhead.
+
+*Additional Considerations:*
+
+* Network Protocol Support: Confirm that the new configuration aligns with network protocols.
+* Proxy and Firewall Considerations: Ensure the new setup works seamlessly with proxies and firewalls.
+* SSL/TLS Certificates: Review and update SSL/TLS certificate handling.
+* Connection Pooling: Examine how connection pooling affects network connections.
+* DNS Resolution: Verify DNS configurations for accurate resolution.
+
+=== 3. Readiness, Liveness, and Startup Probes
+
+Probes play a critical role in maintaining service reliability within Kubernetes.
+
+*Additional Considerations:*
+
+* Custom Probes: Create custom probes tailored to your application's specific requirements.
+* Graceful Handling: Implement mechanisms to handle probe failures gracefully.
+* Monitoring Tools: Use monitoring and alerting systems to proactively address issues.
+* Scaling Strategies: Base auto-scaling on probe results to ensure the desired number of healthy pods.
+* Documentation: Document probe configurations and behaviors for troubleshooting and onboarding.
+
+In conclusion, Kubernetes networking with Java applications can be complex, but with proper troubleshooting and optimization steps, you can enhance the reliability and performance of your deployment. Addressing network errors and fine-tuning your setup are essential for a smooth and efficient operation.
