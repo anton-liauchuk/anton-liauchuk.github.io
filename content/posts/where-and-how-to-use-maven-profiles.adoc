@@ -1,0 +1,99 @@
+---
+title: "Where and how to use maven profiles"
+date: "2023-02-05"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Where and how to use maven profiles
+
+**Maven profiles** provide a possibility to build a project with different configurations. Profiles can override these sections in POM file: `<dependencies>`, `<plugins>`, `<properties>`. A full list of supported sections can be found in the Maven https://maven.apache.org/guides/introduction/introduction-to-profiles.html#profiles-in-poms[documentation].
+
+== Use cases with examples from Jersey library
+
+Source code of jersey library is available on https://github.com/eclipse-ee4j/jersey/blob/3.1.1/pom.xml[GitHub]. The source code for the Jersey library provides a great example of some of the most useful use cases for Maven profiles.
+
+=== JDK-related profiles
+
+Let's start from `jdk8` and `jdk11+` profiles. For activating these profiles, there is an `<activation>` section. `jdk8` and `jdk11+` profiles are triggered based on the build environment. The structure:
+
+----
+<profile>
+  <id>jdk8</id>
+  <activation>
+    <jdk>1.8</jdk>
+  </activation>
+  <properties>
+    <!--properties for jdk 1.8-->
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!--plugins for jdk 1.8-->
+      </plugins>
+    </pluginManagement>
+  </build>
+</profile>
+<profile>
+  <id>jdk11+</id>
+  <activation>
+    <jdk>[11,)</jdk>
+  </activation>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!--plugins for jdk 1.8-->
+      </plugins>
+    </pluginManagement>
+  </build>
+</profile>
+----
+
+This gives developers the ability to build a library or application with two different JDKs.
+
+=== testsSkip profile
+
+The testsSkip profile is useful for local development or certain environments, as it allows tests to be skipped during the build:
+
+----
+<profile>
+  <id>testsSkip</id>
+  <activation>
+    <activeByDefault>false</activeByDefault>
+    <property>
+      <name>skipTests</name>
+      <value>true</value>
+    </property>
+  </activation>
+  <properties>
+    <skip.tests>true</skip.tests>
+    <skip.e2e>true</skip.e2e>
+  </properties>
+</profile>
+----
+
+=== Module-related profile
+
+Profiles can be used to add modules, as seen in the example provided:
+
+----
+<profile>
+  <id>bundlesIncluded</id>
+  <activation>
+    <activeByDefault>false</activeByDefault>
+    <property>
+      <name>!bundles.excluded</name>
+    </property>
+  </activation>
+  <modules>
+    <module>bundles</module>
+  </modules>
+</profile>
+----
+
+== Conclusion
+
+This article has provided an overview of how and where to use Maven profiles, with examples from the Jersey library.
