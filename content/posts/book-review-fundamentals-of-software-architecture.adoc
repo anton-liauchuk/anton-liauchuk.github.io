@@ -1,0 +1,37 @@
+---
+title: "Book Review: Fundamentals of Software Architecture"
+date: "2022-06-27"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Book Review: Fundamentals of Software Architecture
+
+The name of book was very promotable, it's why it was interesting for me to read this book. I prepared the brief description for the main topics of the book, it can be useful to return to this information from time to time.
+
+== Main parts of book
+
+*Architectural styles*
+The main engineering part in book. There is a description of each architecture style with rating by authors. Covered styles: microservices, DDD, monolith, the ways of setting up the microservices, sync vs async communication.
+
+*Technical breadth*
+Technical breadth is very important for thinking like an architect. Authors prepared great explanation why it is needed.
+
+*Architecture katas*
+For having more practice authors of book recommend architecture katas, resource with tasks: http://fundamentalsofsoftwarearchitecture.com/katas/
+
+*Fitness functions*
+From book, fitness function - any mechanism that provides an objective integrity assessment of some architecture characteristic or combination of architecture characteristics.
+
+*Everything in software architecture is a trade-off*
+This idea was accentuated over the entire book that there is no one perfect architecture - it's all about compromises and tradeoffs.
+
+*Analyzing architecture risk*
+There is a description of techniques and practices for identifying and estimating the risks. In related chapter risk matrix was explained.
+
+== What I didn't like
+
+I expected a lot of engineering stuff inside book, but there were too few topics about it. The architectural styles were represented as very brief description.
