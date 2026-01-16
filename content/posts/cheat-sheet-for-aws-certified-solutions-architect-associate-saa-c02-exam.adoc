@@ -1,0 +1,366 @@
+---
+title: "Cheat sheet for AWS Certified Solutions Architect Associate SAA-C02 exam"
+date: "2022-03-13"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+:hardbreaks-option:
+
+= Cheat sheet for AWS Certified Solutions Architect Associate SAA-C02 exam
+
+During the preparation for the AWS Certified Solutions Architect Associate SAA-C02 exam, I created a list of questions/answers which were difficult for me during the learning process.
+
+Useful resources which were used:
+https://www.udemy.com/course/practice-exams-aws-certified-solutions-architect-associate/
+https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/
+
+== VPC and networks
+
+**What is the difference between NAT Gateway and NAT instances**
+
+* gateway can scale automatically;
+* NAT instance can be used as a bastion server
+* Security Groups can be associated with a NAT instance
+* NAT instance supports port forwarding
+https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html
+
+**Where can NAT gateway be located?** +
+Only in public subnet
+
+**What is VPN CloudHub** +
+https://docs.aws.amazon.com/vpn/latest/s2svpn/VPN_CloudHub.html
+
+**Where can a Transit gateway be used?** +
+interconnect several VPCs (also, vpcs + on premises into star network).
+https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html
+
+**What is Site2site vpn connection** +
+quick connection for a small amount of traffic. Traffic is encrypted
+https://docs.aws.amazon.com/vpn/latest/s2svpn/how_it_works.html
+https://docs.aws.amazon.com/vpn/latest/s2svpn/internetwork-traffic-privacy.html
+
+**What is the difference between Security group vs NACL** +
+It’s about stateful vs stateless
+https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Security.html#VPC_Security_Comparison
+
+**How can blue green deployment be implemented?** +
+Via global accelerator
+https://aws.amazon.com/blogs/networking-and-content-delivery/using-aws-global-accelerator-to-achieve-blue-green-deployments/
+
+**How to share a subnet of one vpc for other vpcs?** +
+Vpc sharing
+https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html
+
+**What are the only two AWS services that have a Gateway Endpoint?** +
+Amazon S3, DynamoDB
+
+**Which IP addresses are reserved by AWS in the subnet?** +
+5 IP addresses (first 4 & last 1)
+
+**What is PrivateLink?** +
+VPC Endpoints (powered by AWS PrivateLink) allows you to connect to AWS services using a private network instead of using the public Internet.
+
+**Can you identify the Amazon VPC options to be configured in order to get the private hosted zone to work?** +
+Enable DNS hostnames and DNS resolution for private hosted zones (enableDnsHostnames, enableDnsSupport)
+
+**The company wants to build a web log archival solution such that only the most frequently accessed logs are available as cached data locally** +
+Use AWS Volume Gateway - Cached Volume
+
+**What is VPN?** +
+It allows you to connect your AWS cloud resources to your on-premises data center using secure and private sessions with IP Security (IPSec) or Transport Layer Security (TLS) tunnels
+
+=== Disaster recovery & Data transferring
+
+**Pilot light vs warm standby** +
+The pilot light approach requires you to "turn on" servers, possibly deploy additional (non-core) infrastructure, and scale up, whereas Warm Standby only requires you to scale up (everything is already deployed and running).
+https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html
+
+**What is DataSync?** +
+AWS DataSync is an online data transfer service that simplifies, automates, and accelerates moving data between on-premises storage systems and AWS Storage services, as well as between AWS Storage services.
+DataSync does not support EBS. +
+https://aws.amazon.com/datasync/
+
+**How to manage backups across different AWS services** +
+AWS Backup
+
+**Possible size of data for Snowmobile and Snowball?**
+Snowmobile 10pb - 100pb
+Snowball 10tb - 10pb
+https://aws.amazon.com/snowmobile/
+
+**What for AWS Direct connect?**
+It is used to move GB/s of data to the cloud, over a private secure network. It takes about one month to set up.
+
+**Size of snowball storage optimized?**
+80TB (simple deprecated snowball also 80TB)
+
+**How to deploy and manage large fleets of Snowball devices?**
+AWS OpsHub
+
+**Which aws snowball gives storage clustering**
+AWS Snowball Edge Compute Optimized
+https://aws.amazon.com/snow/#Feature_comparison
+
+**How to stream data from Amazon S3 into Amazon Kinesis Data Streams?**
+AWS Database Migration Service
+
+=== SQS, SNS, Kinesis, Lambda
+
+**NOT a supported subscriber for AWS SNS?**
+Kinesis Data Firehose is now supported, but not *Kinesis Data Streams*.
+
+**Long polling vs short polling in SQS**
+https://aws.amazon.com/sqs/faqs/?nc1=h_ls
+
+**How to postpone the delivery of new messages to the queue for a few seconds?**
+delay queues
+
+**How to replace SQS by SQS FIFO?**
+- Delete the existing standard queue and recreate it as a FIFO queue
+- Make sure that the name of the FIFO queue ends with the .fifo suffix
+- Make sure that the throughput for the target FIFO queue does not exceed 3,000 messages per second (300 if without batches)
+
+**How to calculate batches for SQS FIFO?**
+300 * number of messages in batch per second
+
+**Store the data 7 days for analysing with the same order?**
+Kinesis Data Streams
+
+**Which of the following targets are NOT supported by Kinesis Data Firehose?**
+Amazon EMR
+
+**Can Firehose directly write into a DynamoDB table?**
+Cannot
+
+**Lambda limits?**
+1000 concurrent executions per AWS account per region
+
+**Languages supported by lambda?**
+C#/.NET, Go, Java, Node.js, Python, Ruby
+https://aws.amazon.com/blogs/aws/kds-enhanced-fanout/
+
+**Which queue scales infinitely?**
+SQS
+
+**Can Kinesis Data Analytics used for long-term storage?**
+No
+
+**Protection from duplicate messages via sqs?**
+SQS FIFO, Amazon Simple Workflow
+
+=== RDS
+
+**Which databases support IAM auth?**
+IAM database authentication works with MySQL and PostgreSQL
+
+**How does replication work for different database setups?**
+Standby multi az -> synchronous
+Read replica -> asynchronous
+
+**How many Aurora Read Replicas can you have in a single Aurora DB Cluster?**
+15
+
+**In the event of a failover, Amazon RDS will promote which of the following read replicas?**
+The less priority tier + largest size.
+
+**What is available for moving on-premises db to aws and change db type**
+AWS Schema Conversion Tool
+AWS Database Migration Service
+
+**How do OS updates work?**
+RDS applies OS updates by performing maintenance on the standby, then promoting the standby to primary, and finally performing maintenance on the old primary, which becomes the new standby
+
+**Which Enhanced Monitoring metrics are available for RDS?**
+RDS child processes, RDS processes, OS processes
+
+**How to enable disaster recovery plans for redshift?**
+Enable cross-region snapshots copy in redshift cluster.
+
+=== Route 53
+
+**What is the difference between CNAME and Alias**
+CNAME:
+- Points a hostname to any other hostname. (app.mydomain.com => blabla.anything.com)
+- ONLY FOR NON ROOT DOMAIN (aka. something.mydomain.com)
+
+Alias:
+- Points a hostname to an AWS Resource (app.mydomain.com => blabla.amazonaws.com)
+- Works for ROOT DOMAIN and NON ROOT DOMAIN (aka mydomain.com)
+- Free of charge
+- Native health check
+
+=== S3
+
+**Should a bucket have a unique name?**
+Buckets must have a globally unique name
+
+**What is time for returning from S3 deep archive?**
+48 hours
+https://aws.amazon.com/s3/faqs/
+
+**Which is more cost-efficient: S3 Standard-IA or S3 Intelligent-Tiering?**
+It's cost-efficient to use S3 Standard-IA instead of S3 Intelligent-Tiering.
+
+**What are possible destinations for s3 notifications**
+fifo queues cannot be used
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/NotificationHowTo.html
+
+**What is the most cost-effective solution in s3 for storing data for 24 hours which should be highly accessible?**
+All storage classes have a minimum duration charge, s3 standart - no. That’s why the s3 standart is the best choice.
+https://aws.amazon.com/s3/storage-classes/
+
+**How to monitor security?**
+Use Amazon GuardDuty to monitor any malicious activity on data stored in S3. Use Amazon Macie to identify any sensitive data stored on S3.
+
+**Upload 10gb files cloudfront vs s3 transfer acceleration?**
+S3 Transfer Acceleration. Less 1gb - cloudfront
+https://aws.amazon.com/s3/faqs/
+
+**S3 names patterns?**
+http://bucket-name.s3-website.Region.amazonaws.com
+http://bucket-name.s3-website-Region.amazonaws.com
+
+**Compare storage costs?**
+Cost of test file storage on S3 Standard < Cost of test file storage on EFS < Cost of test file storage on EBS
+
+**Compliance controls in S3 and glacier?**
+Vault!
+
+**Which of the following S3 storage classes supports encryption by default for both data at rest as well as in-transit?**
+Glacier
+
+**Improve speed of uploads?**
+Amazon S3 Transfer Acceleration, *Global Accelerator does not work with s3*
+
+**Retentions for objects in S3?**
+When you apply a retention period to an object version explicitly, you specify a Retain Until Date for the object version
+Different versions of a single object can have different retention modes and periods
+
+**Can versioning of the bucket be removed?**
+Once you version-enable a bucket, it can never return to an unversioned state.
+
+**Is metadata encrypted?**
+No
+
+**Which header should be used for ensuring that each object is encrypted?**
+Bucket policy which denies if the PutObject does not have an x-amz-server-side-encryption header set should be used.
+
+**How to get detailed information about every access request sent to the S3 bucket including the referrer and turn-around time information**
+Enable server access logging for all required Amazon S3 buckets.
+
+**Which methods ensure that all of the objects uploaded to the S3 bucket can be read publicly all over the Internet?**
+- Grant public read access to the object when uploading it using the S3 Console.
+- Configure the S3 bucket policy to set all objects to public read.
+
+**Possible implementations for client-side encryption?**
+Client-Side Encryption with AWS KMS–Managed Customer Master Key (CMK)
+Client-Side Encryption Using a Client-Side Master Key
+
+**What are the possible Event Notification destinations available for S3 buckets?**
+SNS, SQS, Lambda
+
+**What are the prerequisites when routing traffic using Amazon Route 53 to a website that is hosted in an Amazon S3 Bucket?**
+* The bucket must have the same name as your domain
+* A registered domain name
+
+=== Serverless solutions
+
+**What is the requirement for using the DynamoDB global table?**
+DynamoDB Streams are required.
+
+**What is DynamoDB stream?**
+A DynamoDB stream is an ordered flow of information about changes to items in a DynamoDB table.
+
+**What is a fully managed DB with possibility of scaling and backups?**
+DynamoDB
+
+**What is the difference between ElastiCache Redis and Memcached?**
+Memcached supports multithreading.
+Amazon ElastiCache for Redis is also a HIPAA Eligible Service.
+
+**Is auto scaling enabled for dynamodb tables created from CLI?**
+no
+
+=== Monitoring & Auditing
+
+**What is the minimum resolution of High-Resolution Custom Metrics?**
+1 second
+
+**How to monitor memory usage of ec2?**
+Custom metrics should be created.
+
+**How to create custom metrics?**
+Install the CloudWatch agent on each instance
+
+**For which types custom metrics are needed?**
+Memory utilization
+Disk swap utilization
+Disk space utilization
+Page file utilization
+Log collection
+
+=== Load balancers
+
+**What is HTTP response for Application Load Balancer without any registered targets with the target groups**
+HTTP 503: Service unavailable
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html
+
+**What is the difference between Application Load Balancer and Network Load Balancer about cross-zone load balancing?**
+Cross-zone load balancing is enabled for Application Load Balancer and disabled for Network Load Balancer.
+https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html
+
+**Which LB is needed for content-routing?**
+ALB
+
+**Which LB exposes IP?**
+NLB
+
+=== EBS
+
+**Which EBS supports Multi-attach?**
+onlyio1/io2
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html
+
+**Which EBS type CANNOT be used as boot volume?**
+HDD types
+
+=== Security
+
+**How to store a database password in a secure place, and enable automatic rotation of that password every 90 days**
+Secrets Manager
+
+**How to check for vulnerabilities on EC2 instances**
+Amazon Inspector
+
+**How to import third-party SSL/TLS certificates?**
+AWS Certificate Manager and IAM certificate store
+
+**How to protect the system from DDOS attacks?**
+AWS Shield Advanced
+
+**How to protect the system from cryptocurrency mining**
+Amazon GuardDuty
+https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-ec2.html#cryptocurrency-ec2-bitcointoolbdns
+
+**Which data sources are supported by GuardDuty?**
+VPC Flow Logs, DNS logs, CloudTrail events
+
+**On which services can be applied AWS Firewall Manager?**
+AWS WAF
+AWS Shield Advanced
+VPC Security Groups
+
+=== Other topics
+
+**What is the difference between Cognito users and Cognito identity pools**
+Authentication/sign in - Cognito User Pools. Identity pools - obtain temporary AWS credentials to access AWS services.
+https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html
+
+**What are ports for https/http/postgresql?**
+Https - 443, http - 80, postgres - 5432
+
+**Is it possible to integrate Cognito User Pools with CloudFront?**
+You cannot directly integrate Cognito User Pools with CloudFront
