@@ -9,7 +9,7 @@ theme = 'maverick'
 [params]
   description = "Thoughts on Java and building better software"
   author = 'Anton Liauchuk'
-  items = 10
+  items = 100
 
 [menu]
   [[menu.main]]
