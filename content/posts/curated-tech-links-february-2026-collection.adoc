@@ -1,0 +1,82 @@
+---
+title: "Curated Tech Links: February 2026 Collection"
+date: "2026-02-08"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Curated Tech Links: February 2026 Collection
+
+A collection of interesting technical articles, tutorials, and case studies from February 2026 across various domains.
+
+== Java & JVM Ecosystem
+
+https://andrewbaker.ninja/2025/12/23/java-25-aot-cache-a-deep-dive-into-ahead-of-time-compilation-and-training/[Java 25 AOT Cache: A Deep Dive into Ahead-of-Time Compilation and Training]
+
+https://www.morling.dev/blog/jep-483-aot-class-loading-linking/[JEP 483: Ahead-of-Time Class Loading & Linking]
+
+https://inside.java/2026/01/09/run-aot-cache/[AOT Cache Benchmark]
+
+https://scalex.dev/blog/simplifying-code-journey-from-reactive-to-virtual-threads/[Simplifying Code: Journey from Reactive to Virtual Threads]
+
+https://concurrencydeepdives.com/guide-completable-future/[Great Guide for CompletableFuture in Java]
+
+https://www.youtube.com/watch?v=9ueIL0SwEWI[CompletableFuture: The Promises of Java] -
+Video tutorial explaining the differences between `thenApply` and `thenAccept` methods.
+
+https://youtu.be/OXdm5BzQ8mI[Collections Corner Cases - Great Talk]
+
+https://belief-driven-design.com/storage-from-scratch-01-602d1/[Experiments with Project Panama]
+
+https://gabrielinacio.dev/posts/spring-boot-vs-quarkus-startup-time-part-2[Spring Boot vs Quarkus Startup Time - Part 2]
+
+https://www.logicmonitor.com/blog/quarkus-vs-spring[Quarkus vs Spring: Migration Experience]
+
+https://quarkus.io/blog/quarkus-feature-flags/[Feature Flags in Quarkus Applications]
+
+== AI & Machine Learning
+
+=== RAG Systems & Evaluation
+
+https://www.the-main-thread.com/p/measuring-rag-quarkus-langchain4j-evaluation[RAG and Metrics with Quarkus and LangChain4J]
+
+https://docs.ragas.io/en/stable/concepts/metrics/overview/#1-prioritize-end-to-end-metrics[RAGAS Metrics Documentation]
+
+=== AI Applications in Production
+
+https://www.uber.com/blog/query-gpt/[How Uber Implemented QueryGPT Text-to-SQL]
+
+== Stream Processing & Data Engineering
+
+=== Kafka Streams & Apache Flink
+
+https://freedium-mirror.cfd/https://medium.com/@souquieres.adam/kafka-streams-vs-apache-flink-a-pragmatic-comparison-for-stream-processing-and-why-you-should-66fc0b641b26?source=rss-91722ac6bcbe------2[Kafka Streams vs Apache Flink: Pragmatic Comparison]
+
+https://freedium-mirror.cfd/https://medium.com/@souquieres.adam/kafka-stream-microservice-sizing-recipe-5eb71131ae67[Kafka Stream Microservice Sizing Recipe]
+
+=== Change Data Capture & Data Patterns
+
+https://freedium-mirror.cfd/https://medium.com/daangn/karrots-journey-to-cdc-with-mongodb-e052b1c3ec9c[Journey to CDC with MongoDB]
+
+https://medium.com/@souquieres.adam/the-anti-data-streaming-pattern-stop-pressuring-your-referential-databases-9333ed8611af?source=rss-91722ac6bcbe------2[Stop Pressuring Your Referential Databases]
+
+== Cloud & Infrastructure
+
+https://aws.amazon.com/blogs/architecture/how-salesforce-migrated-from-cluster-autoscaler-to-karpenter-across-their-fleet-of-1000-eks-clusters/[Salesforce Migrated from Cluster Autoscaler to Karpenter Across 1000 EKS Clusters]
+
+https://www.uber.com/en-DE/blog/introducing-ufowarder/[Introducing UFowader - Uber's Forwarder Product]
+
+https://www.uber.com/en-DE/blog/from-static-rate-limiting-to-intelligent-load-management/[From Static Rate Limiting to Intelligent Load Management]
+
+https://andrewbaker.ninja/2026/01/04/scaling-mobile-chat-to-millions-architecture-decisions-for-apache-pekko-sse-and-java-25/[Scaling Mobile Chat to Millions: Architecture Decisions]
+
+== Databases & Caching
+
+https://andrewbaker.ninja/2026/01/04/redis-vs-valkey-a-deep-dive-for-enterprise-architects/[Redis vs Valkey: A Deep Dive for Enterprise Architects]
+
+== Development Culture & Practices
+
+https://andrewbaker.ninja/2026/01/26/corporate-herding-when-meetings-replace-thinking/[Corporate Herding: When Meetings Replace Thinking]
