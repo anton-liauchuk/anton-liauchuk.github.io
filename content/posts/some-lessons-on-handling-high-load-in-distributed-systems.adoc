@@ -1,0 +1,66 @@
+---
+title: "Some lessons on handling high load in distributed systems"
+date: "2026-05-25"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Some lessons on handling high load in distributed systems
+
+== Introduction
+
+In this article, I'm going to share the lessons I learned while facing the challenges of handling large spikes in traffic.
+
+Certainly, this is not a full list of potential issues and corresponding solutions.
+I tried to create a list of the issues I faced most often in my experience.
+
+== Define limits to protect the platform and clients
+
+One client can ruin everything, and other clients will not be able to use the product.
+Systems under high load, like https://www.uber.com/en-DE/blog/from-static-rate-limiting-to-intelligent-load-management/[Uber] or https://netflixtechblog.medium.com/performance-under-load-3e6fa9a60581/[Netflix], use the same approach to protect the platform from large spikes.
+Limits must also protect total potential throughput.
+The components, Kafka brokers, and databases cannot be scaled infinitely during spikes.
+For example, a Kafka topic has a limited number of partitions, applications have a maximum count of instances, and each Kafka broker has a limit on throughput.
+Knowing the maximum throughput of the system will help define limits to protect the overall system.
+It's better to define different types of limits, like event rate, message size and etc.
+Flexible approach for rate limiter can support different strategies to handle triggered limit.
+
+== Keep track of synchronous operations in the platform, because each platform has its own synchrony budget.
+
+Each platform has a https://www.morling.dev/blog/the-synchrony-budget/[limit for synchronous operations].
+The main issue is that if something goes wrong with the response time or availability of one component, it may end up in cascading failures.
+Another potential issue occurs when a component that sends a large number of requests scales aggressively, and the target component is not able to scale as fast.
+So, due to aggressive scaling, we can create large spikes from our own components.
+To protect the system from such issues, the following options are possible:
+
+- Review synchronous operations and try to rewrite them in an asynchronous way.
+There are good alternatives to reduce the number of synchronous operations.
+- Protect upstream components by implementing circuit breakers, tune HTTP client configurations to set appropriate timeouts, and define alternate ways, such as a backup queue, to send messages when the target component is not available.
+
+== Define the metrics
+
+Metrics can help find hidden bottlenecks when an issue occurs.
+It's very difficult to troubleshoot an issue with connections to a database or third‑party APIs when there are no related metrics.
+Metrics such as message processing time, message size, database requests (time, count), and third‑party requests simplify troubleshooting.
+
+== Know the bottleneck of the platform
+
+The platform may have components that can be scaled very quickly to high throughput.
+But at the same time, there can be one component that is part of the main pipeline but has lower scalability than other components.
+So understanding the bottleneck of the full platform can give you an understanding of which part must be improved first to increase the throughput of the overall system.
+
+== Design health checks to be safe under high load
+
+Wrong configuration of health checks can trigger cascading failures. Review health checks in the platform to prevent all components from failing.
+
+== Reduce hot partitions as much as you can
+
+From the very beginning, it makes sense to review potential hot partitions because it would be more painful to migrate an existing system to new partition keys.
+
+== Expected errors and exceptions should not trigger additional load on the system
+
+Error handling during spikes can become a problem.
+If any fallbacks were not designed for high load, they may create additional traffic on the system under high load.
