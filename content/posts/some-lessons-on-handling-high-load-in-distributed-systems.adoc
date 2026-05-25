@@ -37,7 +37,7 @@ So, due to aggressive scaling, we can create large spikes from our own component
 To protect the system from such issues, the following options are possible:
 
 - Review synchronous operations and try to rewrite them in an asynchronous way.
-There are good alternatives to reduce the number of synchronous operations.
+There are good alternatives https://medium.com/@souquieres.adam/the-anti-data-streaming-pattern-stop-pressuring-your-referential-databases-9333ed8611af/[to reduce the number of synchronous operations].
 - Protect upstream components by implementing circuit breakers, tune HTTP client configurations to set appropriate timeouts, and define alternate ways, such as a backup queue, to send messages when the target component is not available.
 
 == Define the metrics
