@@ -1,0 +1,41 @@
+---
+title: "Curated Tech Links: May 2026 Collection"
+date: "2026-06-02"
+draft: false
+markup: adoc
+---
+:source-highlighter: rouge
+:rouge-style: base16.dark
+:icons: font
+
+= Curated Tech Links: May 2026 Collection
+
+A collection of interesting technical articles and presentations from May 2026 across various domains.
+
+== Java & JVM
+
+* https://puxiao.me/uncategorized/Java-Concurrency-In-Practice-Question-to-Ask/[Java Concurrency in Practice – short cheat list]
+* https://blog.arkey.fr/2020/11/30/off-heap-reconnaissance/[Off-heap reconnaissance] – great article regarding off-heap memory
+* https://andrewbaker.ninja/2026/03/18/java-26-what-actually-matters-and-why-you-should-care/[Java 26: what actually matters and why you should care] – Java 26 new features
+
+== Distributed Systems & Architecture
+
+* https://www.morling.dev/blog/the-synchrony-budget/[The synchrony budget] – explains why synchronous requests in distributed systems have a hidden "budget" and how to manage it.
+* https://debezium.io/blog/2019/02/19/reliable-microservices-data-exchange-with-the-outbox-pattern/[Reliable microservices data exchange with the outbox pattern] – a practical pattern to reduce synchronous coupling using transactional outbox.
+* https://victorrentea.ro/blog/overengineering-in-onion-hexagonal-architectures/[Overengineering in Onion/Hexagonal architectures] – advice on when clean architecture adds accidental complexity.
+* **Domain-Driven Design series:**
+** https://vaadin.com/blog/ddd-part-1-strategic-domain-driven-design[DDD part 1: Strategic Domain-Driven Design]
+** https://vaadin.com/blog/ddd-part-2-tactical-domain-driven-design[DDD part 2: Tactical Domain-Driven Design]
+** https://vaadin.com/blog/ddd-part-3-domain-driven-design-and-the-hexagonal-architecture[DDD part 3: Domain-Driven Design and the Hexagonal Architecture]
+
+== AI & Software Craft
+
+* https://andrewbaker.ninja/2026/03/14/the-jato-organisation-why-bolting-ai-onto-your-existing-structure-is-a-darwin-award-in-progress/[The JATO Organisation: why bolting AI onto your existing structure is a Darwin award in progress]
+* https://andrewmurphy.io/blog/the-five-stages-of-losing-our-craft[The five stages of losing our craft] – a reflective piece on how developers lose technical craftsmanship over time.
+* https://luminousmen.com/post/stop-feeding-me-ai-slop/[Stop feeding me AI slop] – critiques low‑quality AI‑generated content and advocates for mindful AI use.
+* https://www.youtube.com/watch?v=i1tZN41VKcE[Uber’s new development process based on AI agents] – presentation on how Uber uses autonomous AI agents to streamline development workflows.
+* https://andrewbaker.ninja/2026/05/23/is-ai-profitable-the-1-4-trillion-scorecard-nobody-wants-to-talk-about/[Is AI profitable? The $1.4 trillion scorecard nobody wants to talk about] – analyzes the real ROI of enterprise AI investments, revealing uncomfortable numbers.
+
+== Operations & System Knowledge
+
+* https://andrewbaker.ninja/2026/05/21/know-your-system-the-operational-cognition-questionnaire/[Know your system: the operational cognition questionnaire] – a self‑assessment test to evaluate how well your team truly understands its production systems.
